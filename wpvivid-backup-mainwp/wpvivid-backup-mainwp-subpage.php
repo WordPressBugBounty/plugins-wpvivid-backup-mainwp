@@ -86,7 +86,7 @@ class Mainwp_WPvivid_Extension_Subpage
                             }
                         }
                         else{
-                            $slug = $white_label_setting['white_label_slug'];
+                            $slug = strtolower($white_label_setting['white_label_slug']);
                             $slug_page = strtolower($white_label_setting['white_label_slug']);
                             if($is_mu)
                             {
@@ -1418,6 +1418,45 @@ class Mainwp_WPvivid_Extension_Subpage
             }
 
             $remote_list_html.='<option value="'.$value['id'].'">'.$value['name'].'</option>';
+        }
+        return $remote_list_html;
+    }
+
+    static public function output_rollback_remote_list_addon($site_id, $remote_list)
+    {
+        $remote_list_html = '';
+        $setting_addon=Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_get_option($site_id, 'settings_addon', array());
+        $rollback_remote = isset($setting_addon['wpvivid_rollback_remote']) ? $setting_addon['wpvivid_rollback_remote'] : 0;
+        $remote_id = isset($setting_addon['wpvivid_rollback_remote_id']) ? $setting_addon['wpvivid_rollback_remote_id'] : 0;
+        if($rollback_remote)
+        {
+            $remote_list_html .= '<option value="-1">Choose cloud storage</option>';
+        }
+        else
+        {
+            $remote_list_html .= '<option value="-1" selected="selected" >Choose cloud storage</option>';
+        }
+
+        foreach ($remote_list as $key => $value)
+        {
+            if($key === 'remote_selected')
+            {
+                continue;
+            }
+
+            if(!isset($remote_option['id']))
+            {
+                $remote_option['id'] = $key;
+            }
+
+            if($remote_id==$key&&$rollback_remote)
+            {
+                $remote_list_html .= '<option value="'.$value['id'].'" selected="selected">'.$value['name'].'</option>';
+            }
+            else
+            {
+                $remote_list_html .= '<option value="'.$value['id'].'">'.$value['name'].'</option>';
+            }
         }
         return $remote_list_html;
     }

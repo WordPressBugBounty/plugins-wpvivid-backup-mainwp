@@ -4,7 +4,7 @@
  * Plugin Name: WPvivid Backup MainWP
  * Plugin URI: https://mainwp.com/
  * Description: WPvivid Backup for MainWP enables you to create and download backups of a specific child site, set backup schedules, connect with your remote storage and set settings for all of your child sites directly from your MainWP dashboard.
- * Version: 0.9.37
+ * Version: 0.9.38
  * Author: WPvivid Team
  * Author URI: https://wpvivid.com
  * License: GPL-3.0+
@@ -23,7 +23,7 @@ class Mainwp_WPvivid_Extension_Activator
 {
     protected $plugin_handle = 'wpvivid-backup-mainwp';
     protected $product_id = 'WPvivid Backup MainWP';
-    protected $version = '0.9.37';
+    protected $version = '0.9.38';
     protected $childEnabled;
     public $childKey;
     public $childFile;
@@ -805,6 +805,9 @@ class Mainwp_WPvivid_Extension_Activator
     public function get_global_login_addon()
     {
         $login_addon=Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_get_global_option('login_addon', array());
+        if ( !is_array($login_addon) || empty($login_addon) ) {
+            $login_addon = array();
+        }
         return $login_addon;
     }
 
@@ -1922,7 +1925,7 @@ class Mainwp_WPvivid_Extension_Activator
                     $site['class-update'] = '';
                     $wpvivid_need_update = false;
 
-                    $wpvivid_status = false;
+                    /*$wpvivid_status = false;
                     foreach ($plugins as $plugin){
                         $reg_string = 'wpvivid-backuprestore/wpvivid-backuprestore.php';
                         if ((strcmp($plugin['slug'], $reg_string) === 0)) {
@@ -1950,9 +1953,10 @@ class Mainwp_WPvivid_Extension_Activator
                             }
                             break;
                         }
-                    }
+                    }*/
 
-                    if($wpvivid_status){
+                    //if($wpvivid_status)
+                    //{
                         $site['status'] = 'WPvivid Backup Pro not claimed';
                         $site['class'] = 'need-install-wpvivid-pro';
                         foreach ($plugins as $plugin) {
@@ -2036,7 +2040,7 @@ class Mainwp_WPvivid_Extension_Activator
                                 break;
                             }
                         }
-                    }
+                    //}
                     if (isset($_GET['search']) && !empty($_GET['search'])) {
                         $find = trim(sanitize_text_field($_GET['search']));
                         if (stripos($site['name'], $find) !== false || stripos($site['url'], $find) !== false) {

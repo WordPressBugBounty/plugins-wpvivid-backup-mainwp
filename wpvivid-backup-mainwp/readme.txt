@@ -2,9 +2,9 @@
 Contributors: wpvivid
 Tags: WPvivid backup, MainWP extension, backup, auto backup, cloud backup 
 Requires at least: 4.5
-Tested up to: 6.6.1
+Tested up to: 6.6.2
 Requires PHP: 5.3
-Stable tag: 0.9.37
+Stable tag: 0.9.38
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -47,6 +47,11 @@ See the [get started guide](https://wpvivid.com/wpvivid-backup-for-mainwp).
 3. Set WPvivid Backup Plugin settings for all child sites
 
 == Changelog ==
+= 0.9.38 =
+- Added an option to globally configure backup location for rollback backups.
+- Added an option to export/import settings of the extension.
+- Fixed: Redirection to a child site would fail when white label slug of the site contained capital letters.
+- Fixed: Activating WPvivid license would fail in some cases.
 = 0.9.37 =
 - Added an option to install staging addon for child sites.
 - Fixed some bugs in the plugin code.

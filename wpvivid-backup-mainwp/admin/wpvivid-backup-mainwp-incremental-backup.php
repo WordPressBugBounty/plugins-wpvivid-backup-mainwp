@@ -935,7 +935,13 @@ class Mainwp_WPvivid_Extension_Incremental_Backup
                 {
                     $ret['backup_to']='local';
                 }
-                if(isset($schedule_data['backup']['remote_options']))
+
+                if(isset($schedule_data['backup']['remote_id']))
+                {
+                    $remote_id = $schedule_data['backup']['remote_id'];
+                    $ret['remote_options'][$remote_id] = array();
+                }
+                else if(isset($schedule_data['backup']['remote_options']))
                 {
                     $ret['remote_options'] = $schedule_data['backup']['remote_options'];
                 }

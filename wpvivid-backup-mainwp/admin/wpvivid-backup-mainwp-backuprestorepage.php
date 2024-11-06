@@ -3251,7 +3251,7 @@ class Mainwp_WPvivid_Extension_BackupRestorePage
                     }
                 }
                 else{
-                    $slug = $white_label_setting['white_label_slug'];
+                    $slug = strtolower($white_label_setting['white_label_slug']);
                     $slug_page = strtolower($white_label_setting['white_label_slug']);
                     if($is_mu)
                     {
@@ -3690,7 +3690,7 @@ class Mainwp_WPvivid_Extension_BackupRestorePage
                     }
                 }
                 else{
-                    $slug = $white_label_setting['white_label_slug'];
+                    $slug = strtolower($white_label_setting['white_label_slug']);
                     $slug_page = strtolower($white_label_setting['white_label_slug']);
                     if($is_mu)
                     {
@@ -4050,7 +4050,7 @@ class Mainwp_WPvivid_Extension_BackupRestorePage
                     }
                 }
                 else{
-                    $slug = $white_label_setting['white_label_slug'];
+                    $slug = strtolower($white_label_setting['white_label_slug']);
                     $slug_page = strtolower($white_label_setting['white_label_slug']);
                     if($is_mu)
                     {
@@ -4590,7 +4590,7 @@ class Mainwp_WPvivid_Extension_BackupRestorePage
                     }
                 }
                 else{
-                    $slug = $white_label_setting['white_label_slug'];
+                    $slug = strtolower($white_label_setting['white_label_slug']);
                     $slug_page = strtolower($white_label_setting['white_label_slug']);
                     if($is_mu)
                     {

@@ -32,6 +32,126 @@ class Mainwp_WPvivid_Extension_SettingPage
         add_action('wp_ajax_mwp_wpvivid_set_general_setting', array($this, 'set_general_setting'));
         add_action('wp_ajax_mwp_wpvivid_set_global_general_setting', array($this, 'set_global_general_setting'));
         add_action('wp_ajax_mwp_wpvivid_sync_setting', array($this, 'sync_setting'));
+        add_action('wp_ajax_mwp_wpvivid_achieve_rollback_remote_addon', array($this, 'achieve_rollback_remote_addon'));
+        add_action('wp_ajax_mwp_wpvivid_export_setting_addon', array($this, 'export_setting_addon'));
+        add_action('wp_ajax_mwp_wpvivid_import_setting_addon', array($this, 'import_setting_addon'));
+    }
+
+    public function export_setting_addon()
+    {
+        global $mainwp_wpvivid_extension_activator;
+        $mainwp_wpvivid_extension_activator->mwp_ajax_check_security();
+        try{
+            $json['plugin']='WPvivid-Mainwp-Extension';
+            $json['data']['settings_addon']=Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_get_global_option('settings_addon', array());
+            $json['data']['schedule_mould_addon']=Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_get_global_option('schedule_mould_addon', array());
+            $json['data']['incremental_backup_setting']=Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_get_global_option('incremental_backup_setting', array());
+            $json['data']['remote_addon']=Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_get_global_option('remote_addon', array());
+            $json['data']['menu_capability']=Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_get_global_option('menu_capability', array());
+            $json['data']['white_label_setting']=Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_get_global_option('white_label_setting', array());
+
+            $parse = wp_parse_url(home_url());
+            $path = '';
+            if(isset($parse['path'])) {
+                $parse['path'] = str_replace('/', '_', $parse['path']);
+                $parse['path'] = str_replace('.', '_', $parse['path']);
+                $path = $parse['path'];
+            }
+            $parse['host'] = str_replace('/', '_', $parse['host']);
+            $parse['host'] = str_replace('.', '_', $parse['host']);
+            $domain_tran = $parse['host'].$path;
+            $offset=get_option('gmt_offset');
+            $date_format = gmdate("Ymd",time()+$offset*60*60);
+            $time_format = gmdate("His",time()+$offset*60*60);
+            $export_file_name = 'wpvivid_mainwp_setting-'.$domain_tran.'-'.$date_format.'-'.$time_format.'.json';
+            if (!headers_sent()) {
+                header('Content-Disposition: attachment; filename='.$export_file_name);
+                header('Content-Type: application/force-download');
+                header('Content-Description: File Transfer');
+                header('Cache-Control: must-revalidate');
+                header('Content-Transfer-Encoding: binary');
+            }
+
+            echo wp_json_encode($json);
+        }
+        catch (Exception $error) {
+            $message = 'An exception has occurred. class: '.get_class($error).';msg: '.$error->getMessage().';code: '.$error->getCode().';line: '.$error->getLine().';in_file: '.$error->getFile().';';
+            error_log($message);
+            echo wp_json_encode(array('result'=>'failed','error'=>$message));
+            die();
+        }
+        exit;
+    }
+
+    public function import_setting_addon()
+    {
+        global $mainwp_wpvivid_extension_activator;
+        $mainwp_wpvivid_extension_activator->mwp_ajax_check_security();
+        try{
+            if (isset($_POST['data']) && !empty($_POST['data']) && is_string($_POST['data'])) {
+                $data = sanitize_text_field($_POST['data']);
+                $data = stripslashes($data);
+                $json = json_decode($data, true);
+                if (is_null($json)) {
+                    die();
+                }
+                if (json_last_error() === JSON_ERROR_NONE && is_array($json) && array_key_exists('plugin', $json) && $json['plugin'] == 'WPvivid-Mainwp-Extension') {
+                    foreach ($json['data'] as $option_name=>$option)
+                    {
+                        Mainwp_WPvivid_Extension_DB_Option::get_instance()->wpvivid_update_global_option($option_name, $option);
+                    }
+                    $ret['result'] = 'success';
+                    echo wp_json_encode($ret);
+                } else {
+                    $ret['result'] = 'failed';
+                    $ret['error'] = __('The selected file is not the setting file for WPvivid. Please upload the right file.', 'wpvivid-backuprestore');
+                    echo wp_json_encode($ret);
+                }
+            }
+            die();
+        }
+        catch (Exception $error) {
+            $message = 'An exception has occurred. class: '.get_class($error).';msg: '.$error->getMessage().';code: '.$error->getCode().';line: '.$error->getLine().';in_file: '.$error->getFile().';';
+            error_log($message);
+            echo wp_json_encode(array('result'=>'failed','error'=>$message));
+            die();
+        }
+    }
+
+    public function achieve_rollback_remote_addon()
+    {
+        global $mainwp_wpvivid_extension_activator;
+        $mainwp_wpvivid_extension_activator->mwp_ajax_check_security();
+        try{
+            if (isset($_POST['site_id']) && !empty($_POST['site_id']) && is_string($_POST['site_id'])){
+                $site_id = sanitize_key($_POST['site_id']);
+                $post_data['mwp_action'] = 'wpvivid_achieve_rollback_remote_addon_mainwp';
+                $information = apply_filters('mainwp_fetchurlauthed', $mainwp_wpvivid_extension_activator->childFile, $mainwp_wpvivid_extension_activator->childKey, $site_id, 'wpvivid_backuprestore', $post_data);
+                if (isset($information['error'])) {
+                    $ret['result'] = 'failed';
+                    $ret['error'] = $information['error'];
+                } else {
+                    $ret['result'] = 'success';
+                    if(isset($information['wpvivid_remote_list']) && !empty($information['wpvivid_remote_list']))
+                    {
+                        $remote_list = $information['wpvivid_remote_list'];
+                    }
+                    else
+                    {
+                        $remote_list = array();
+                    }
+                    $ret['remote_list_html'] = Mainwp_WPvivid_Extension_Subpage::output_rollback_remote_list_addon($site_id, $remote_list);
+                }
+                echo wp_json_encode($ret);
+            }
+            die();
+        }
+        catch (Exception $error) {
+            $message = 'An exception has occurred. class: '.get_class($error).';msg: '.$error->getMessage().';code: '.$error->getCode().';line: '.$error->getLine().';in_file: '.$error->getFile().';';
+            error_log($message);
+            echo wp_json_encode(array('result'=>'failed','error'=>$message));
+            die();
+        }
     }
 
     public function set_general_setting_addon()
@@ -212,6 +332,20 @@ class Mainwp_WPvivid_Extension_SettingPage
                     $setting_data['wpvivid_max_rollback_count']['max_core_count']=$rollback_setting['mwp_wpvivid_max_core_count_addon'];
                     $setting_data['wpvivid_auto_backup_db_before_update']=$rollback_setting['mwp_wpvivid_auto_backup_db_before_update_addon'];
                     $setting_data['wpvivid_common_setting']['rollback_max_backup_count'] = $rollback_setting['mwp_wpvivid_rollback_max_backup_count_addon'];
+
+
+                    $setting_data['wpvivid_common_setting']['rollback_max_remote_backup_count'] = $rollback_setting['mwp_wpvivid_rollback_max_remote_backup_count_addon'];
+                    $setting_data['wpvivid_rollback_retain_local'] = $rollback_setting['mwp_wpvivid_rollback_retain_local_addon'];
+                    if($rollback_setting['mwp_wpvivid_manual_backup_remote_selector'] == '-1')
+                    {
+                        $setting_data['wpvivid_rollback_remote'] = 0;
+                    }
+                    else
+                    {
+                        $setting_data['wpvivid_rollback_remote'] = 1;
+                        $setting_data['wpvivid_rollback_remote_id'] = $rollback_setting['mwp_wpvivid_manual_backup_remote_selector'];
+                    }
+
                 }
 
                 if(empty($options)){
@@ -435,6 +569,16 @@ class Mainwp_WPvivid_Extension_SettingPage
                     $setting_data['wpvivid_max_rollback_count']['max_core_count']=$rollback_setting['mwp_wpvivid_max_core_count_addon'];
                     $setting_data['wpvivid_auto_backup_db_before_update']=$rollback_setting['mwp_wpvivid_auto_backup_db_before_update_addon'];
                     $setting_data['wpvivid_common_setting']['rollback_max_backup_count'] = $rollback_setting['mwp_wpvivid_rollback_max_backup_count_addon'];
+                    $setting_data['wpvivid_common_setting']['rollback_max_remote_backup_count'] = $rollback_setting['mwp_wpvivid_rollback_max_remote_backup_count_addon'];
+                    $setting_data['wpvivid_rollback_retain_local'] = $rollback_setting['mwp_wpvivid_rollback_retain_local_addon'];
+                    if($rollback_setting['mwp_wpvivid_manual_backup_remote_selector'] == '-1')
+                    {
+                        $setting_data['wpvivid_rollback_remote'] = 0;
+                    }
+                    else
+                    {
+                        $setting_data['wpvivid_rollback_remote'] = 1;
+                    }
                 }
 
                 if(empty($options)){
@@ -800,7 +944,6 @@ class Mainwp_WPvivid_Extension_SettingPage
                     'rollback': rollback_data,
                     'site_id': '<?php echo esc_html($this->site_id); ?>'
                 };
-
                 jQuery('#mwp_wpvivid_setting_general_save_addon').css({'pointer-events': 'none', 'opacity': '0.4'});
                 mwp_wpvivid_post_request(ajax_data, function (data) {
                     try {
@@ -925,6 +1068,56 @@ class Mainwp_WPvivid_Extension_SettingPage
             {
                 jQuery(obj).parents("tr:first").remove();
             }
+
+            function mwp_wpvivid_export_settings() {
+                location.href =ajaxurl+'?_wpnonce='+ajax_object.ajax_nonce+'&action=mwp_wpvivid_export_setting_addon';
+            }
+
+            jQuery('#mwp_wpvivid_setting_export').click(function(){
+                mwp_wpvivid_export_settings();
+            });
+
+            function mwp_wpvivid_import_settings(){
+                var files = jQuery('input[name="fileTrans"]').prop('files');
+
+                if(files.length == 0){
+                    alert('Choose a settings file and import it by clicking Import button.');
+                    return;
+                }
+                else{
+                    var reader = new FileReader();
+                    reader.readAsText(files[0], "UTF-8");
+                    reader.onload = function(evt){
+                        var fileString = evt.target.result;
+                        var ajax_data = {
+                            'action': 'mwp_wpvivid_import_setting_addon',
+                            'data': fileString
+                        };
+                        mwp_wpvivid_post_request(ajax_data, function(data){
+                            try {
+                                var jsonarray = jQuery.parseJSON(data);
+                                if (jsonarray.result === 'success') {
+                                    alert('The plugin settings were imported successfully.');
+                                    location.reload();
+                                }
+                                else {
+                                    alert('Error: ' + jsonarray.error);
+                                }
+                            }
+                            catch(err){
+                                alert(err);
+                            }
+                        }, function(XMLHttpRequest, textStatus, errorThrown) {
+                            var error_message = mwp_wpvivid_output_ajaxerror('importing the previously-exported settings', textStatus, errorThrown);
+                            alert(error_message);
+                        });
+                    }
+                }
+            }
+
+            jQuery('#mwp_wpvivid_setting_import').click(function(){
+                mwp_wpvivid_import_settings();
+            });
         </script>
         <?php
     }
@@ -1295,6 +1488,23 @@ class Mainwp_WPvivid_Extension_SettingPage
                                     <span>e.g. [</span><span><?php echo esc_html($mail_title); ?></span><span><?php /* translators: %s: Plugin name. */ echo sprintf(esc_html(': Backup Succeeded]12-04-2019 07:04:57 - By %s.', 'wpvivid'), esc_html(apply_filters('wpvivid_white_label_display', 'WPvivid Backup Plugin'))); ?></span>
                                 </p>
                             </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="row-title" style="min-width:200px;"><label for="tablecell">Export/Import Extension Settings</label></td>
+                        <td>
+                            <table class="widefat" style="border:none;box-shadow:none;">
+                                <tr>
+                                    <td>
+                                        <p><input id="mwp_wpvivid_setting_export" type="button" name="" value="Export">Export settings of WPvivid Backup for MainWP extension to your local computer.</p>
+                                    </td>
+                                    <td>
+                                        <p><input type="file" name="fileTrans" id="mwp_wpvivid_select_import_file"></p>
+                                        <p><input id="mwp_wpvivid_setting_import" type="button" name="" value="Import">Import exported settings of WPvivid Backup for MainWP extension to the current site.</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     <?php
@@ -2388,7 +2598,7 @@ class Mainwp_WPvivid_Extension_SettingPage
                     </div>
                     <div id="mwp_wpvivid_image_custom_backup_path" style="display: none">
                         <span><code><?php echo esc_html($backup_path_prefix); ?></code></span>
-                        <input type="text" option="mwp-setting-addon" name="mwp_image_backup_path_addon" class="all-options" value="<?php echo esc_attr($backup_path); ?>" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')" onpaste="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')" />
+                        <input type="text" option="mwp-setting-addon" name="mwp_image_backup_path_addon" class="all-options" value="<?php echo esc_attr($backup_path); ?>" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9_]/g,'')" onpaste="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')" />
                     </div>
                 </td>
             </tr>
@@ -2966,6 +3176,19 @@ class Mainwp_WPvivid_Extension_SettingPage
 
         $rollback_max_backup_count=isset($this->setting_addon['wpvivid_common_setting']['rollback_max_backup_count']) ? $this->setting_addon['wpvivid_common_setting']['rollback_max_backup_count'] : 30;
         $rollback_max_backup_count=intval($rollback_max_backup_count);
+        $rollback_max_remote_backup_count=isset($this->setting_addon['wpvivid_common_setting']['rollback_max_remote_backup_count']) ? $this->setting_addon['wpvivid_common_setting']['rollback_max_remote_backup_count'] : 30;
+        $rollback_max_remote_backup_count=intval($rollback_max_remote_backup_count);
+
+        $rollback_remote = isset($this->setting_addon['wpvivid_rollback_remote']) ? $this->setting_addon['wpvivid_rollback_remote'] : 0;
+        $rollback_retain_local = isset($this->setting_addon['wpvivid_rollback_retain_local']) ? $this->setting_addon['wpvivid_rollback_retain_local'] : 0;
+        if($rollback_retain_local)
+        {
+            $rollback_retain_local = 'checked';
+        }
+        else
+        {
+            $rollback_retain_local = '';
+        }
 
         ?>
         <div style="margin-top: 10px;">
@@ -2982,6 +3205,43 @@ class Mainwp_WPvivid_Extension_SettingPage
                 </p>
             </div>
             <div style="margin-bottom: 10px;">
+
+                <p>
+                    <select option="mwp-rollback-addon" name="mwp_wpvivid_manual_backup_remote_selector">
+                        <?php
+                        if($global)
+                        {
+                            if($rollback_remote)
+                            {
+                                ?>
+                                <option value="-1">Backup to Localhost</option>
+                                <option value="1" selected="selected">Backup to Remote</option>
+                                <?php
+                            }
+                            else
+                            {
+                                ?>
+                                <option value="-1" selected="selected">Backup to Localhost</option>
+                                <option value="1">Backup to Remote</option>
+                                <?php
+                            }
+                        }
+                        else
+                        {
+                            ?>
+                            <option value="-1">Backup to Localhost</option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                    <span>Choose cloud storage for versioning backups (files + database).</span>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" option="mwp-rollback-addon" name="mwp_wpvivid_rollback_retain_local_addon" <?php echo $rollback_retain_local; ?>> Keep storing the backups in localhost after uploading to remote storage.
+                    </label>
+                </p>
+
                 <p>
                     <label>
                         <input type="checkbox" option="mwp-rollback-addon" name="mwp_wpvivid_auto_backup_db_before_update_addon" <?php esc_attr_e($auto_backup_db_before_update) ?> />
@@ -2993,6 +3253,12 @@ class Mainwp_WPvivid_Extension_SettingPage
                         <label>
                             <input type="text" class="mwp-wpvivid-rollback-count-retention" placeholder="30" option="mwp-rollback-addon" name="mwp_wpvivid_rollback_max_backup_count_addon" value="<?php esc_attr_e($rollback_max_backup_count); ?>">
                             <span> database backups retained in localhost.</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="text" class="mwp-wpvivid-rollback-count-retention" placeholder="30" option="mwp-rollback-addon" name="mwp_wpvivid_rollback_max_remote_backup_count_addon" value="<?php esc_attr_e($rollback_max_remote_backup_count); ?>">
+                            <span> database backups retained in remote storage.</span>
                         </label>
                     </p>
                 </div>
@@ -3017,6 +3283,52 @@ class Mainwp_WPvivid_Extension_SettingPage
                 {
                     jQuery('#mwp_wpvivid_auto_backup_db_count_display').hide();
                 }
+            });
+
+            var mwp_wpvivid_get_rollback_remote_retry_times = 0;
+            function mwp_wpvivid_get_rollback_remote_retry(error_msg){
+                var need_retry_get_rollback_remote = false;
+                mwp_wpvivid_get_rollback_remote_retry_times++;
+                if(mwp_wpvivid_get_rollback_remote_retry_times < 3){
+                    need_retry_get_rollback_remote = true;
+                }
+                if(need_retry_get_rollback_remote){
+                    setTimeout(function(){
+                        mwp_wpvivid_init_get_rollback_remote();
+                    }, 3000);
+                }
+                else{
+                }
+            }
+
+            function mwp_wpvivid_init_get_rollback_remote()
+            {
+                var ajax_data = {
+                    'action': 'mwp_wpvivid_achieve_rollback_remote_addon',
+                    'site_id': '<?php echo esc_html($this->site_id); ?>'
+                };
+                mwp_wpvivid_post_request(ajax_data, function (data) {
+                    try {
+                        var jsonarray = jQuery.parseJSON(data);
+                        if (jsonarray.result === 'success') {
+                            jQuery('select[option=mwp-rollback-addon][name=mwp_wpvivid_manual_backup_remote_selector]').html(jsonarray.remote_list_html);
+                        }
+                        else {
+                            mwp_wpvivid_get_rollback_remote_retry(jsonarray.error);
+                        }
+                    }
+                    catch (err) {
+                        mwp_wpvivid_get_rollback_remote_retry(err);
+                    }
+                }, function (XMLHttpRequest, textStatus, errorThrown) {
+                    var error_message = mwp_wpvivid_output_ajaxerror('achieving backup', textStatus, errorThrown);
+                    mwp_wpvivid_get_rollback_remote_retry(error_message);
+                });
+            }
+
+            jQuery(document).ready(function($)
+            {
+                mwp_wpvivid_init_get_rollback_remote();
             });
         </script>
         <?php
