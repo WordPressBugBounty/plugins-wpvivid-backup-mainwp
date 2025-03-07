@@ -5290,7 +5290,7 @@ class Mainwp_WPvivid_Extension_SchedulePage
 
                 if(website_ids.length>0)
                 {
-                    jQuery('#mwp_wpvivid_sync_schedule').css({'pointer-events': 'none', 'opacity': '0.4'});
+                    jQuery('#'+sync_btn_id).css({'pointer-events': 'none', 'opacity': '0.4'});
                     var check_addon = '<?php echo esc_js($check_addon); ?>';
                     if(check_addon){
                         var schedule_mould_name = jQuery('.mwp_wpvivid_schedule_mould_name').html();

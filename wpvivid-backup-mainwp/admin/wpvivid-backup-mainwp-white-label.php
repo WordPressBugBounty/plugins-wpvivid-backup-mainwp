@@ -378,7 +378,7 @@ class Mainwp_WPvivid_Extension_White_Label
                 });
                 if(website_ids.length>0)
                 {
-                    jQuery('#mwp_wpvivid_sync_menu_capability').css({'pointer-events': 'none', 'opacity': '0.4'});
+                    jQuery('#mwp_wpvivid_sync_white_label').css({'pointer-events': 'none', 'opacity': '0.4'});
                     var check_addon = '<?php echo esc_js($check_addon); ?>';
                     mwp_wpvivid_sync_site(website_ids,check_addon,'mwp_wpvivid_sync_white_label','Extensions-Wpvivid-Backup-Mainwp&tab=white_label','mwp_wpvivid_white_label_tab');
                 }

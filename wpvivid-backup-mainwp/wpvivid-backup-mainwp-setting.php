@@ -618,7 +618,7 @@ class Mainwp_WPvivid_Extension_Setting
             }
             ?>
 
-            <table class="ui single line table" id="mwp_wpvivid_sites_table">
+            <table class="ui selectable unstackable table mainwp-with-preview-table mainwp-manage-wpsites-table" id="mwp_wpvivid_sites_table" style="width:100%">
                 <thead>
                 <tr>
                     <th class="no-sort collapsing check-column"><span class="ui checkbox"><input type="checkbox"></span></th>

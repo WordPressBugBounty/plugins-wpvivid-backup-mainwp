@@ -4,7 +4,7 @@
  * Plugin Name: WPvivid Backup MainWP
  * Plugin URI: https://mainwp.com/
  * Description: WPvivid Backup for MainWP enables you to create and download backups of a specific child site, set backup schedules, connect with your remote storage and set settings for all of your child sites directly from your MainWP dashboard.
- * Version: 0.9.38
+ * Version: 0.9.39
  * Author: WPvivid Team
  * Author URI: https://wpvivid.com
  * License: GPL-3.0+
@@ -23,7 +23,7 @@ class Mainwp_WPvivid_Extension_Activator
 {
     protected $plugin_handle = 'wpvivid-backup-mainwp';
     protected $product_id = 'WPvivid Backup MainWP';
-    protected $version = '0.9.38';
+    protected $version = '0.9.39';
     protected $childEnabled;
     public $childKey;
     public $childFile;
@@ -2103,7 +2103,7 @@ class Mainwp_WPvivid_Extension_Activator
                 <?php
             }
             ?>
-            <table class="ui single line table">
+            <table class="ui selectable unstackable table mainwp-with-preview-table mainwp-manage-wpsites-table">
                 <thead>
                 <tr>
                     <th class="no-sort collapsing check-column"><span class="ui checkbox"><input type="checkbox" checked /></span></th>
@@ -2170,14 +2170,10 @@ class Mainwp_WPvivid_Extension_Activator
                 }
                 ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <th class="row-title" colspan="4"><input class="ui green mini button"
-                                                             id="<?php echo esc_attr($submit_id) ?>" type="button"
-                                                             value="<?php esc_attr_e('Start Syncing Changes', 'mainwp-wpvivid-extension'); ?>"/></th>
-                </tr>
-                </tfoot>
             </table>
+            <input class="ui green mini button"
+                   id="<?php echo esc_attr($submit_id) ?>" type="button"
+                   value="<?php esc_attr_e('Start Syncing Changes', 'mainwp-wpvivid-extension'); ?>"/>
         </div>
         <?php
     }
