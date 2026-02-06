@@ -4,7 +4,7 @@
  * Plugin Name: WPvivid Backup MainWP
  * Plugin URI: https://mainwp.com/
  * Description: WPvivid Backup for MainWP enables you to create and download backups of a specific child site, set backup schedules, connect with your remote storage and set settings for all of your child sites directly from your MainWP dashboard.
- * Version: 0.9.39
+ * Version: 0.9.40
  * Author: WPvivid Team
  * Author URI: https://wpvivid.com
  * License: GPL-3.0+
@@ -23,7 +23,7 @@ class Mainwp_WPvivid_Extension_Activator
 {
     protected $plugin_handle = 'wpvivid-backup-mainwp';
     protected $product_id = 'WPvivid Backup MainWP';
-    protected $version = '0.9.39';
+    protected $version = '0.9.40';
     protected $childEnabled;
     public $childKey;
     public $childFile;

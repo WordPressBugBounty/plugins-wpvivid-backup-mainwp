@@ -1978,9 +1978,16 @@ class Mainwp_WPvivid_Extension_DashboardPage
                 foreach ($report as $task_id => $report_option) {
                     if(isset($report_option['task_id']) && !empty($report_option['task_id']))
                     {
-                        $last_backup = date("F d, Y H:i", $report_option['backup_time'] + $time_zone * 60 * 60);
+                        if($report_option['status'] === 'Succeeded')
+                        {
+                            $last_backup = '<span style="color: green;">'.sanitize_text_field($report_option['status']).'</span>';
+                        }
+                        else
+                        {
+                            $last_backup = '<span style="color: red;">'.sanitize_text_field($report_option['status']).'</span>';
+                        }
                         $last_backup .= '<br>';
-                        $last_backup .= sanitize_text_field($report_option['status']);
+                        $last_backup .= date("F d, Y H:i", $report_option['backup_time'] + $time_zone * 60 * 60);
                         break;
                     }
                     /*if($report_option['status'] === 'Succeeded') {
@@ -2068,7 +2075,7 @@ class Mainwp_WPvivid_Extension_DashboardPage
                 <td class="website-name"><a href="admin.php?page=managesites&dashboard=<?php echo esc_html($website_id); ?>"><?php echo esc_html(stripslashes( $website['name'] )); ?></a></td>
                 <td style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><a href="admin.php?page=SiteOpen&newWindow=yes&websiteid=<?php echo esc_html($website_id); ?>&_opennonce=<?php echo esc_html(wp_create_nonce( 'mainwp-admin-nonce' )); ?>" target="_blank"><i class="sign in icon"></i></a></td>
                 <td style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><a href="<?php echo esc_url($website['url']); ?>" target="_blank"><?php echo esc_html($website['url']); ?></a></td>
-                <td class="collapsing center aligned backup column-backup" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><span><?php echo esc_html($last_backup); ?></span></td>
+                <td class="collapsing center aligned backup column-backup" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><span><?php echo wp_kses_post($last_backup); ?></span></td>
                 <td><a onclick="mwp_wpvivid_check_report('<?php echo esc_js($website['id']); ?>', '<?php echo esc_js($website['pro']); ?>', '<?php echo esc_js($website['name']); ?>');" style="cursor: pointer;">Report</a></td>
                 <td style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><span class="updating"></span><span class="mwp-wpvivid-current-version"><?php echo esc_html($website['version']); ?></span></td>
                 <td style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><span class="install-login-status"></span><span class="mwp-wpvivid-status"><?php echo esc_html($website['status']); ?></span></td>

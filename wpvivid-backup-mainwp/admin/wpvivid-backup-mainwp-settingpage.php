@@ -196,18 +196,56 @@ class Mainwp_WPvivid_Extension_SettingPage
 
                 //
                 $setting_data['wpvivid_common_setting']['use_adaptive_settings'] = $setting['mwp_use_adaptive_settings_addon'];
+                $setting_data['wpvivid_common_setting']['auto_delete_backup_log'] = $setting['mwp_auto_delete_backup_log'];
+                $setting_data['wpvivid_common_setting']['backup_database_use_primary_key'] = $setting['mwp_backup_database_use_primary_key'];
+                $setting_data['wpvivid_common_setting']['backup_upload_use_cm_store'] = $setting['mwp_backup_upload_use_cm_store'];
                 $setting_data['wpvivid_common_setting']['db_connect_method'] = $setting['mwp_db_connect_method_addon'];
                 $setting_data['wpvivid_common_setting']['zip_method'] = $setting['mwp_zip_method_addon'];
-                $setting_data['wpvivid_common_setting']['compress_file_count'] = $setting['mwp_compress_file_count_addon'];
-                $setting_data['wpvivid_common_setting']['max_file_size'] = $setting['mwp_max_file_size_addon'];
-                $setting_data['wpvivid_common_setting']['max_backup_table'] = $setting['mwp_max_backup_table_addon'];
-                $setting_data['wpvivid_common_setting']['max_sql_file_size'] = $setting['mwp_max_sql_file_size_addon'];
-                $setting_data['wpvivid_common_setting']['exclude_file_size'] = $setting['mwp_exclude_file_size_addon'];
-                $setting_data['wpvivid_common_setting']['max_execution_time'] = $setting['mwp_max_execution_time_addon'];
-                $setting_data['wpvivid_common_setting']['restore_max_execution_time'] = $setting['mwp_restore_max_execution_time_addon'];
-                $setting_data['wpvivid_common_setting']['memory_limit'] = $setting['mwp_memory_limit_addon'].'M';
-                $setting_data['wpvivid_common_setting']['restore_memory_limit'] = $setting['mwp_restore_memory_limit_addon'].'M';
-                $setting_data['wpvivid_common_setting']['migrate_size'] = $setting['mwp_migrate_size_addon'];
+                $setting_data['wpvivid_common_setting']['backup_params'] = $setting['mwp_backup_params_addon'];
+                if($setting_data['wpvivid_common_setting']['backup_params'] === 'low')
+                {
+                    $setting_data['wpvivid_common_setting']['compress_file_count'] = '500';
+                    $setting_data['wpvivid_common_setting']['max_file_size'] = '200';
+                    $setting_data['wpvivid_common_setting']['max_backup_table'] = '1000';
+                    $setting_data['wpvivid_common_setting']['max_sql_file_size'] = '400';
+                    $setting_data['wpvivid_common_setting']['exclude_file_size'] = 0;
+                    $setting_data['wpvivid_common_setting']['max_execution_time'] = 300;
+                    $setting_data['wpvivid_common_setting']['memory_limit'] = '512M';
+                    $setting_data['wpvivid_common_setting']['migrate_size'] = '2048';
+                }
+                else if($setting_data['wpvivid_common_setting']['backup_params'] === 'mid')
+                {
+                    $setting_data['wpvivid_common_setting']['compress_file_count'] = '2000';
+                    $setting_data['wpvivid_common_setting']['max_file_size'] = '1024';
+                    $setting_data['wpvivid_common_setting']['max_backup_table'] = '3000';
+                    $setting_data['wpvivid_common_setting']['max_sql_file_size'] = '1024';
+                    $setting_data['wpvivid_common_setting']['exclude_file_size'] = 0;
+                    $setting_data['wpvivid_common_setting']['max_execution_time'] = 500;
+                    $setting_data['wpvivid_common_setting']['memory_limit'] = '512M';
+                    $setting_data['wpvivid_common_setting']['migrate_size'] = '2048';
+                }
+                else if($setting_data['wpvivid_common_setting']['backup_params'] === 'high')
+                {
+                    $setting_data['wpvivid_common_setting']['compress_file_count'] = '10000';
+                    $setting_data['wpvivid_common_setting']['max_file_size'] = '4080';
+                    $setting_data['wpvivid_common_setting']['max_backup_table'] = '6000';
+                    $setting_data['wpvivid_common_setting']['max_sql_file_size'] = '4080';
+                    $setting_data['wpvivid_common_setting']['exclude_file_size'] = 0;
+                    $setting_data['wpvivid_common_setting']['max_execution_time'] = 900;
+                    $setting_data['wpvivid_common_setting']['memory_limit'] = '512M';
+                    $setting_data['wpvivid_common_setting']['migrate_size'] = '2048';
+                }
+                else if($setting_data['wpvivid_common_setting']['backup_params'] === 'custom')
+                {
+                    $setting_data['wpvivid_common_setting']['compress_file_count'] = $setting['mwp_compress_file_count_addon'];
+                    $setting_data['wpvivid_common_setting']['max_file_size'] = $setting['mwp_max_file_size_addon'];
+                    $setting_data['wpvivid_common_setting']['max_backup_table'] = $setting['mwp_max_backup_table_addon'];
+                    $setting_data['wpvivid_common_setting']['max_sql_file_size'] = $setting['mwp_max_sql_file_size_addon'];
+                    $setting_data['wpvivid_common_setting']['exclude_file_size'] = $setting['mwp_exclude_file_size_addon'];
+                    $setting_data['wpvivid_common_setting']['max_execution_time'] = $setting['mwp_max_execution_time_addon'];
+                    $setting_data['wpvivid_common_setting']['memory_limit'] = $setting['mwp_memory_limit_addon'].'M';
+                    $setting_data['wpvivid_common_setting']['migrate_size'] = $setting['mwp_migrate_size_addon'];
+                }
 
                 //
                 if(isset($setting['mwp_wpvivid_uc_quick_scan_addon']))
@@ -433,18 +471,56 @@ class Mainwp_WPvivid_Extension_SettingPage
 
                 //
                 $setting_data['wpvivid_common_setting']['use_adaptive_settings'] = $setting['mwp_use_adaptive_settings_addon'];
+                $setting_data['wpvivid_common_setting']['auto_delete_backup_log'] = $setting['mwp_auto_delete_backup_log'];
+                $setting_data['wpvivid_common_setting']['backup_database_use_primary_key'] = $setting['mwp_backup_database_use_primary_key'];
+                $setting_data['wpvivid_common_setting']['backup_upload_use_cm_store'] = $setting['mwp_backup_upload_use_cm_store'];
                 $setting_data['wpvivid_common_setting']['db_connect_method'] = $setting['mwp_db_connect_method_addon'];
                 $setting_data['wpvivid_common_setting']['zip_method'] = $setting['mwp_zip_method_addon'];
-                $setting_data['wpvivid_common_setting']['compress_file_count'] = $setting['mwp_compress_file_count_addon'];
-                $setting_data['wpvivid_common_setting']['max_file_size'] = $setting['mwp_max_file_size_addon'];
-                $setting_data['wpvivid_common_setting']['max_backup_table'] = $setting['mwp_max_backup_table_addon'];
-                $setting_data['wpvivid_common_setting']['max_sql_file_size'] = $setting['mwp_max_sql_file_size_addon'];
-                $setting_data['wpvivid_common_setting']['exclude_file_size'] = $setting['mwp_exclude_file_size_addon'];
-                $setting_data['wpvivid_common_setting']['max_execution_time'] = $setting['mwp_max_execution_time_addon'];
-                $setting_data['wpvivid_common_setting']['restore_max_execution_time'] = $setting['mwp_restore_max_execution_time_addon'];
-                $setting_data['wpvivid_common_setting']['memory_limit'] = $setting['mwp_memory_limit_addon'].'M';
-                $setting_data['wpvivid_common_setting']['restore_memory_limit'] = $setting['mwp_restore_memory_limit_addon'].'M';
-                $setting_data['wpvivid_common_setting']['migrate_size'] = $setting['mwp_migrate_size_addon'];
+                $setting_data['wpvivid_common_setting']['backup_params'] = $setting['mwp_backup_params_addon'];
+                if($setting_data['wpvivid_common_setting']['backup_params'] === 'low')
+                {
+                    $setting_data['wpvivid_common_setting']['compress_file_count'] = '500';
+                    $setting_data['wpvivid_common_setting']['max_file_size'] = '200';
+                    $setting_data['wpvivid_common_setting']['max_backup_table'] = '1000';
+                    $setting_data['wpvivid_common_setting']['max_sql_file_size'] = '400';
+                    $setting_data['wpvivid_common_setting']['exclude_file_size'] = 0;
+                    $setting_data['wpvivid_common_setting']['max_execution_time'] = 300;
+                    $setting_data['wpvivid_common_setting']['memory_limit'] = '512M';
+                    $setting_data['wpvivid_common_setting']['migrate_size'] = '2048';
+                }
+                else if($setting_data['wpvivid_common_setting']['backup_params'] === 'mid')
+                {
+                    $setting_data['wpvivid_common_setting']['compress_file_count'] = '2000';
+                    $setting_data['wpvivid_common_setting']['max_file_size'] = '1024';
+                    $setting_data['wpvivid_common_setting']['max_backup_table'] = '3000';
+                    $setting_data['wpvivid_common_setting']['max_sql_file_size'] = '1024';
+                    $setting_data['wpvivid_common_setting']['exclude_file_size'] = 0;
+                    $setting_data['wpvivid_common_setting']['max_execution_time'] = 500;
+                    $setting_data['wpvivid_common_setting']['memory_limit'] = '512M';
+                    $setting_data['wpvivid_common_setting']['migrate_size'] = '2048';
+                }
+                else if($setting_data['wpvivid_common_setting']['backup_params'] === 'high')
+                {
+                    $setting_data['wpvivid_common_setting']['compress_file_count'] = '10000';
+                    $setting_data['wpvivid_common_setting']['max_file_size'] = '4080';
+                    $setting_data['wpvivid_common_setting']['max_backup_table'] = '6000';
+                    $setting_data['wpvivid_common_setting']['max_sql_file_size'] = '4080';
+                    $setting_data['wpvivid_common_setting']['exclude_file_size'] = 0;
+                    $setting_data['wpvivid_common_setting']['max_execution_time'] = 900;
+                    $setting_data['wpvivid_common_setting']['memory_limit'] = '512M';
+                    $setting_data['wpvivid_common_setting']['migrate_size'] = '2048';
+                }
+                else if($setting_data['wpvivid_common_setting']['backup_params'] === 'custom')
+                {
+                    $setting_data['wpvivid_common_setting']['compress_file_count'] = $setting['mwp_compress_file_count_addon'];
+                    $setting_data['wpvivid_common_setting']['max_file_size'] = $setting['mwp_max_file_size_addon'];
+                    $setting_data['wpvivid_common_setting']['max_backup_table'] = $setting['mwp_max_backup_table_addon'];
+                    $setting_data['wpvivid_common_setting']['max_sql_file_size'] = $setting['mwp_max_sql_file_size_addon'];
+                    $setting_data['wpvivid_common_setting']['exclude_file_size'] = $setting['mwp_exclude_file_size_addon'];
+                    $setting_data['wpvivid_common_setting']['max_execution_time'] = $setting['mwp_max_execution_time_addon'];
+                    $setting_data['wpvivid_common_setting']['memory_limit'] = $setting['mwp_memory_limit_addon'].'M';
+                    $setting_data['wpvivid_common_setting']['migrate_size'] = $setting['mwp_migrate_size_addon'];
+                }
 
                 //
                 if(isset($setting['mwp_wpvivid_uc_quick_scan_addon']))
@@ -1118,6 +1194,22 @@ class Mainwp_WPvivid_Extension_SettingPage
             jQuery('#mwp_wpvivid_setting_import').click(function(){
                 mwp_wpvivid_import_settings();
             });
+
+            jQuery('input:radio[option=mwp-setting-addon][name=mwp_backup_params_addon]').click(function()
+            {
+                if(jQuery(this).prop('checked'))
+                {
+                    var value = jQuery(this).prop('value');
+                    if(value=='custom')
+                    {
+                        jQuery('#mwp_wpvivid_custom_backup_params_addon').show();
+                    }
+                    else
+                    {
+                        jQuery('#mwp_wpvivid_custom_backup_params_addon').hide();
+                    }
+                }
+            });
         </script>
         <?php
     }
@@ -1654,6 +1746,24 @@ class Mainwp_WPvivid_Extension_SettingPage
             $use_adaptive_settings = $this->setting_addon['wpvivid_common_setting']['use_adaptive_settings'] == '1' ? 'checked' : '';
         }
 
+        $auto_delete_backup_log='';
+        if(isset($this->setting_addon['wpvivid_common_setting']['auto_delete_backup_log']))
+        {
+            $auto_delete_backup_log = $this->setting_addon['wpvivid_common_setting']['auto_delete_backup_log'] == '1' ? 'checked' : '';
+        }
+
+        $backup_database_use_primary_key='checked';
+        if(isset($this->setting_addon['wpvivid_common_setting']['backup_database_use_primary_key']))
+        {
+            $backup_database_use_primary_key = $this->setting_addon['wpvivid_common_setting']['backup_database_use_primary_key'] == '1' ? 'checked' : '';
+        }
+
+        $backup_upload_use_cm_store='checked';
+        if(isset($this->setting_addon['wpvivid_common_setting']['backup_upload_use_cm_store']))
+        {
+            $backup_upload_use_cm_store = $this->setting_addon['wpvivid_common_setting']['backup_upload_use_cm_store'] == '1' ? 'checked' : '';
+        }
+
         $db_method_wpdb = 'checked';
         $db_method_pdo  = '';
         if(isset($this->setting_addon['wpvivid_common_setting']['db_connect_method'])){
@@ -1693,6 +1803,66 @@ class Mainwp_WPvivid_Extension_SettingPage
         $restore_memory_limit=isset($this->setting_addon['wpvivid_common_setting']['restore_memory_limit'])?$this->setting_addon['wpvivid_common_setting']['restore_memory_limit']:'256M';
         $migrate_size=isset($this->setting_addon['wpvivid_common_setting']['migrate_size'])?$this->setting_addon['wpvivid_common_setting']['migrate_size']:'2048';
 
+        if(isset($this->setting_addon['wpvivid_common_setting']['backup_params']))
+        {
+            if($this->setting_addon['wpvivid_common_setting']['backup_params'] === 'low')
+            {
+                $backup_params_low    = 'checked';
+                $backup_params_mid    = '';
+                $backup_params_high   = '';
+                $backup_params_custom = '';
+                $backup_custom_setting_display = 'display: none;';
+            }
+            else if($this->setting_addon['wpvivid_common_setting']['backup_params'] === 'mid')
+            {
+                $backup_params_low    = '';
+                $backup_params_mid    = 'checked';
+                $backup_params_high   = '';
+                $backup_params_custom = '';
+                $backup_custom_setting_display = 'display: none;';
+            }
+            else if($this->setting_addon['wpvivid_common_setting']['backup_params'] === 'high')
+            {
+                $backup_params_low    = '';
+                $backup_params_mid    = '';
+                $backup_params_high   = 'checked';
+                $backup_params_custom = '';
+                $backup_custom_setting_display = 'display: none;';
+            }
+            else if($this->setting_addon['wpvivid_common_setting']['backup_params'] === 'custom')
+            {
+                $backup_params_low    = '';
+                $backup_params_mid    = '';
+                $backup_params_high   = '';
+                $backup_params_custom = 'checked';
+                $backup_custom_setting_display = '';
+            }
+            else
+            {
+                $backup_params_low    = 'checked';
+                $backup_params_mid    = '';
+                $backup_params_high   = '';
+                $backup_params_custom = '';
+                $backup_custom_setting_display = 'display: none;';
+            }
+        }
+        else if(isset($this->setting_addon['wpvivid_common_setting']['compress_file_count']))
+        {
+            $backup_params_low    = '';
+            $backup_params_mid    = '';
+            $backup_params_high   = '';
+            $backup_params_custom = 'checked';
+            $backup_custom_setting_display = '';
+        }
+        else
+        {
+            $backup_params_low    = 'checked';
+            $backup_params_mid    = '';
+            $backup_params_high   = '';
+            $backup_params_custom = '';
+            $backup_custom_setting_display = 'display: none;';
+        }
+
         ?>
         <div style="margin-top: 10px;"></div>
         <table class="widefat" style="border-left:none;border-top:none;border-right:none;">
@@ -1708,6 +1878,48 @@ class Mainwp_WPvivid_Extension_SettingPage
                         </label>
                     </p>
                     <p><code>Designed for servers with limited resources. Enabling it can improve backup success rates, but may result in longer backup time.</code></p>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="row-title" style="min-width:200px;">
+                    <label for="tablecell">Auto Delete Backup Log</label>
+                </td>
+                <td>
+                    <p>
+                        <label class="wpvivid-checkbox">
+                            <input type="checkbox" option="mwp-setting-addon" name="mwp_auto_delete_backup_log" <?php echo esc_attr($auto_delete_backup_log); ?> />
+                            <span><?php esc_html_e('Automatically delete corresponding logs when deleting backups'); ?></span>
+                        </label>
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="row-title" style="min-width:200px;">
+                    <label for="tablecell">Large Database Mode</label>
+                </td>
+                <td>
+                    <p>
+                        <label class="wpvivid-checkbox">
+                            <input type="checkbox" option="mwp-setting-addon" name="mwp_backup_database_use_primary_key" <?php esc_attr_e($backup_database_use_primary_key); ?> />
+                            <span><?php esc_html_e('This mode optimizes backup process for high-volume data. You can try to enable it if backups fail or time out due to a very large database'); ?></span>
+                        </label>
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="row-title" style="min-width:200px;">
+                    <label for="tablecell">Large Uploads Mode</label>
+                </td>
+                <td>
+                    <p>
+                        <label class="wpvivid-checkbox">
+                            <input type="checkbox" option="mwp-setting-addon" name="mwp_backup_upload_use_cm_store" <?php esc_attr_e($backup_upload_use_cm_store); ?> />
+                            <span><?php esc_html_e('This mode improves backup performance for extensive media libraries. You can try to enable it if backups are slow or fail because of a large number of files in the uploads folder. This mode only supports ZipArchive, it will not work with PclZip'); ?></span>
+                        </label>
+                    </p>
                 </td>
             </tr>
 
@@ -1779,113 +1991,142 @@ class Mainwp_WPvivid_Extension_SettingPage
                 <td class="row-title" style="min-width:200px;"><label for="tablecell">Parameters of backups/restore</label></td>
                 <td>
                     <div>
-                        <span><input type="text" placeholder="<?php echo esc_attr($compress_file_count); ?>" option="mwp-setting-addon" name="mwp_compress_file_count_addon" id="compress_file_count" class="all-options" value="<?php echo esc_attr($compress_file_count); ?>" onkeyup="value=value.replace(/\D/g,'')"></span><span>The number of files compressed to the backup zip each time</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
+                        <fieldset>
+                            <label class="wpvivid-radio" style="float:left; padding-right:1em;">
+                                <input type="radio" option="mwp-setting-addon" name="mwp_backup_params_addon" value="low" <?php esc_attr_e($backup_params_low); ?> />
+                                <span><strong>Low (Balanced)</strong></span>
+                                <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex">
+                                    <div class="mwp-wpvivid-bottom">
+                                        <!-- The content you need -->
+                                        <p>Low (Balanced): Use this default setting for minimal server resource usage, but expect longer backup times. Best for shared hosting or limited resources. Backups are split into 200MB chunks.</p>
+                                        <i></i> <!-- do not delete this line -->
+                                    </div>
+                                </span>
+                            </label>
+                            <label class="wpvivid-radio" style="float:left; padding-right:1em;">
+                                <input type="radio" option="mwp-setting-addon" name="mwp_backup_params_addon" value="mid" <?php esc_attr_e($backup_params_mid); ?> />
+                                <span><strong>Mid (Standard)</strong></span>
+                                <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex">
+                                    <div class="mwp-wpvivid-bottom">
+                                        <!-- The content you need -->
+                                        <p>Mid (Standard): This mode offers a good balance between backup speed and resource usage. It's suitable for most web hosting environments.</p>
+                                        <i></i> <!-- do not delete this line -->
+                                    </div>
+                                </span>
+                            </label>
+                            <label class="wpvivid-radio" style="float:left; padding-right:1em;">
+                                <input type="radio" option="mwp-setting-addon" name="mwp_backup_params_addon" value="high" <?php esc_attr_e($backup_params_high); ?> />
+                                <span><strong>High (Accelerated)</strong></span>
+                                <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex">
+                                    <div class="mwp-wpvivid-bottom">
+                                        <!-- The content you need -->
+                                        <p>High (Accelerated): This mode uses more server resources to reduce backup time, but is only recommended for dedicated servers. If backups time out or get stuck, consider Mid or Low mode. Backups are split into 4GB chunks.</p>
+                                        <i></i> <!-- do not delete this line -->
+                                    </div>
+                                </span>
+                            </label>
+                            <label class="wpvivid-radio" style="float:left; padding-right:1em;">
+                                <input type="radio" option="mwp-setting-addon" name="mwp_backup_params_addon" value="custom" <?php esc_attr_e($backup_params_custom); ?> />
+                                <span><strong>Custom (Advanced)</strong></span>
+                                <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex">
+                                    <div class="mwp-wpvivid-bottom">
+                                        <!-- The content you need -->
+                                        <p>Custom (Advanced): This mode allows fine-tuning of backup parameters. Incorrect configuration can lead to backup failures. It is recommended to use only with specific guidance from our support team.</p>
+                                        <i></i> <!-- do not delete this line -->
+                                    </div>
+                                </span>
+                            </label>
+                        </fieldset>
+                    </div>
+                    <p></p>
+                    <div id="mwp_wpvivid_custom_backup_params_addon" style="<?php esc_attr_e($backup_custom_setting_display); ?>">
+                        <div>
+                            <span><input type="text" placeholder="<?php echo esc_attr($compress_file_count); ?>" option="mwp-setting-addon" name="mwp_compress_file_count_addon" id="compress_file_count" class="all-options" value="<?php echo esc_attr($compress_file_count); ?>" onkeyup="value=value.replace(/\D/g,'')"></span><span>The number of files compressed to the backup zip each time</span>
+                            <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
                             <div class="mwp-wpvivid-bottom">
                                 <!-- The content you need -->
                                 <p>When taking a backup, the plugin will compress this number of files to the backup zip each time. The default value is 500. The lower the value, the longer time the backup will take, but the higher the backup success rate. If you encounter a backup timeout issue, try to decrease this value.</p>
                                 <i></i> <!-- do not delete this line -->
                             </div>
                         </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="200" option="mwp-setting-addon" name="mwp_max_file_size_addon" id="wpvivid_max_zip" class="all-options" value="<?php echo esc_attr(str_replace('M', '', $max_file_size)); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, split a backup every this size</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
+                        </div>
+                        <p></p>
+                        <div>
+                            <span><input type="text" placeholder="200" option="mwp-setting-addon" name="mwp_max_file_size_addon" id="wpvivid_max_zip" class="all-options" value="<?php echo esc_attr(str_replace('M', '', $max_file_size)); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, split a backup every this size</span>
+                            <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
                             <div class="mwp-wpvivid-bottom">
                                 <!-- The content you need -->
                                 <p>Some web hosting providers limit large zip files (e.g. 200MB), and therefore splitting your backup into many parts is an ideal way to avoid hitting the limitation if you are running a big website. Please try to adjust the value if you are encountering backup errors. When you set a value of 0MB, backups will be split every 4GB.</p>
                                 <i></i> <!-- do not delete this line -->
                             </div>
                         </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="1000" option="mwp-setting-addon" name="mwp_max_backup_table_addon" class="all-options" value="<?php echo esc_attr($max_backup_table); ?>" onkeyup="value=value.replace(/\D/g,'')">The number of database tables compressed to each zip</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
+                        </div>
+                        <p></p>
+                        <div>
+                            <span><input type="text" placeholder="1000" option="mwp-setting-addon" name="mwp_max_backup_table_addon" class="all-options" value="<?php echo esc_attr($max_backup_table); ?>" onkeyup="value=value.replace(/\D/g,'')">The number of database tables compressed to each zip</span>
+                            <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
                             <div class="mwp-wpvivid-bottom">
                                 <!-- The content you need -->
                                 <p>When taking a database backup, the plugin will compress this number of tables to each backup zip. The default value is 1000 which works for most websites.</p>
                                 <i></i> <!-- do not delete this line -->
                             </div>
                         </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="200" option="mwp-setting-addon" name="mwp_max_sql_file_size_addon" class="all-options" value="<?php echo esc_attr(str_replace('M', '', $max_sql_file_size)); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, split a sql file every this size</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
+                        </div>
+                        <p></p>
+                        <div>
+                            <span><input type="text" placeholder="200" option="mwp-setting-addon" name="mwp_max_sql_file_size_addon" class="all-options" value="<?php echo esc_attr(str_replace('M', '', $max_sql_file_size)); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, split a sql file every this size</span>
+                            <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
                             <div class="mwp-wpvivid-bottom">
                                 <!-- The content you need -->
                                 <p>Some web hosting providers limit large files (e.g. 200MB), and therefore splitting your sql files into many parts is an ideal way to avoid hitting the limitation if you are running a big website. Please try to adjust the value if you are encountering backup errors. If you use a value of 0 MB, any sql files won't be split.</p>
                                 <i></i> <!-- do not delete this line -->
                             </div>
                         </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="0" option="mwp-setting-addon" name="mwp_exclude_file_size_addon" id="wpvivid_ignore_large" class="all-options" value="<?php echo esc_attr($exclude_file_size); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, exclude files larger than this size</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
+                        </div>
+                        <p></p>
+                        <div>
+                            <span><input type="text" placeholder="0" option="mwp-setting-addon" name="mwp_exclude_file_size_addon" id="wpvivid_ignore_large" class="all-options" value="<?php echo esc_attr($exclude_file_size); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, exclude files larger than this size</span>
+                            <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
                             <div class="mwp-wpvivid-bottom">
                                 <!-- The content you need -->
                                 <p>Using the option will ignore the file larger than the certain size in MB when backing up, '0' (zero) means unlimited.</p>
                                 <i></i> <!-- do not delete this line -->
                             </div>
                         </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="900" option="mwp-setting-addon" name="mwp_max_execution_time_addon" id="wpvivid_option_timeout" class="all-options" value="<?php echo esc_attr($max_execution_time); ?>" onkeyup="value=value.replace(/\D/g,'')">Seconds</span><span>, maximum PHP script execution time for a backup task</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
+                        </div>
+                        <p></p>
+                        <div>
+                            <span><input type="text" placeholder="900" option="mwp-setting-addon" name="mwp_max_execution_time_addon" id="wpvivid_option_timeout" class="all-options" value="<?php echo esc_attr($max_execution_time); ?>" onkeyup="value=value.replace(/\D/g,'')">Seconds</span><span>, maximum PHP script execution time for a backup task</span>
+                            <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
                             <div class="mwp-wpvivid-bottom">
                                 <!-- The content you need -->
                                 <p>The time-out is not your server PHP time-out. With the execution time exhausted, our plugin will shut the process of backup down. If the progress of backup encounters a time-out, that means you have a medium or large sized website, please try to scale the value bigger.</p>
                                 <i></i> <!-- do not delete this line -->
                             </div>
                         </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="1800" option="mwp-setting-addon" name="mwp_restore_max_execution_time_addon" class="all-options" value="<?php echo esc_attr($restore_max_execution_time); ?>" onkeyup="value=value.replace(/\D/g,'')">Seconds</span><span>, maximum PHP script execution time for a restore task</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
-                            <div class="mwp-wpvivid-bottom">
-                                <!-- The content you need -->
-                                <p>The time-out is not your server PHP time-out. With the execution time exhausted, our plugin will shut the process of restore down. If the progress of restore encounters a time-out, that means you have a medium or large sized website, please try to scale the value bigger.</p>
-                                <i></i> <!-- do not delete this line -->
-                            </div>
-                        </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="256" option="mwp-setting-addon" name="mwp_memory_limit_addon" class="all-options" value="<?php echo esc_attr(str_replace('M', '', $memory_limit)); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, maximum PHP memory for a backup task</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
+                        </div>
+                        <p></p>
+                        <div>
+                            <span><input type="text" placeholder="256" option="mwp-setting-addon" name="mwp_memory_limit_addon" class="all-options" value="<?php echo esc_attr(str_replace('M', '', $memory_limit)); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, maximum PHP memory for a backup task</span>
+                            <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
                             <div class="mwp-wpvivid-bottom">
                                 <!-- The content you need -->
                                 <p>Adjust this value to apply for a temporary PHP memory limit for WPvivid backup plugin to run a backup. We set this value to 256M by default. Increase the value if you encounter a memory exhausted error. Note: some web hosting providers may not support this.</p>
                                 <i></i> <!-- do not delete this line -->
                             </div>
                         </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="256" option="mwp-setting-addon" name="mwp_restore_memory_limit_addon" class="all-options" value="<?php echo esc_attr(str_replace('M', '', $restore_memory_limit)); ?>" onkeyup="value=value.replace(/\D/g,'')">MB</span><span>, maximum PHP memory for a restore task</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
-                            <div class="mwp-wpvivid-bottom">
-                                <!-- The content you need -->
-                                <p>Adjust this value to apply for a temporary PHP memory limit for WPvivid backup plugin in restore process. We set this value to 256M by default. Increase the value if you encounter a memory exhausted error. Note: some web hosting providers may not support this</p>
-                                <i></i> <!-- do not delete this line -->
-                            </div>
-                        </span>
-                    </div>
-                    <p></p>
-                    <div>
-                        <span><input type="text" placeholder="2048" option="mwp-setting-addon" name="mwp_migrate_size_addon" class="all-options" value="<?php echo esc_attr($migrate_size); ?>" onkeyup="value=value.replace(/\D/g,'')">KB</span><span>, chunk size</span>
-                        <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
+                        </div>
+                        <p></p>
+                        <div>
+                            <span><input type="text" placeholder="2048" option="mwp-setting-addon" name="mwp_migrate_size_addon" class="all-options" value="<?php echo esc_attr($migrate_size); ?>" onkeyup="value=value.replace(/\D/g,'')">KB</span><span>, chunk size</span>
+                            <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex mwp-wpvivid-tooltip-padding-top">
                             <div class="mwp-wpvivid-bottom">
                                 <!-- The content you need -->
                                 <p>e.g.  if you choose a chunk size of 2MB, a 8MB file will use 4 chunks. Decreasing this value will break the ISP's transmission limit, for example:512KB</p>
                                 <i></i> <!-- do not delete this line -->
                             </div>
                         </span>
+                        </div>
                     </div>
                 </td>
             </tr>

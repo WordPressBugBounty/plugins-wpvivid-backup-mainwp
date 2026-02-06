@@ -2,9 +2,9 @@
 Contributors: wpvivid
 Tags: WPvivid backup, MainWP extension, backup, auto backup, cloud backup 
 Requires at least: 4.5
-Tested up to: 6.7.2
+Tested up to: 6.9
 Requires PHP: 5.3
-Stable tag: 0.9.39
+Stable tag: 0.9.40
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -47,6 +47,10 @@ See the [get started guide](https://wpvivid.com/wpvivid-backup-for-mainwp).
 3. Set WPvivid Backup Plugin settings for all child sites
 
 == Changelog ==
+= 0.9.40 =
+- Added backup settings including Auto Delete Logs, Large Database/Uploads modes, and Backup Performance presets.
+- Optimized display of backup results in website list on the Dashboard.
+- Successfully tested with WordPress 6.9.
 = 0.9.39 =
 - Added compatibility with MainWP 5.4.
 - Optimized the plugin code.
