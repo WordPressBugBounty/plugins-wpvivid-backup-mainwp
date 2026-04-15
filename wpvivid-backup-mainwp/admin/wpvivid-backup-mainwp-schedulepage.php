@@ -4043,6 +4043,11 @@ class Mainwp_WPvivid_Extension_SchedulePage
                     }, 3000);
                 });
             }
+
+            jQuery('#mwp_wpvivid_schedule_mould_name').on('input', function () {
+                const val = jQuery(this).val();
+                jQuery(this).val(val.replace(/[^a-zA-Z0-9_-]/g, ''));
+            });
         </script>
         <?php
     }

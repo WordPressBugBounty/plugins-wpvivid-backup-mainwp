@@ -1769,7 +1769,7 @@ class Mainwp_WPvivid_Extension_DashboardPage
         {
             $websites_with_plugin=$mainwp_wpvivid_extension_activator->get_websites_ex();
             ?>
-            <table class="ui single line selectable stackable table" id="mwp_wpvivid_sites_table" style="width: 100%; table-layout: fixed;">
+            <table class="ui selectable unstackable table mainwp-with-preview-table mainwp-manage-wpsites-table" id="mwp_wpvivid_sites_table" style="width: 100%;">
                 <thead>
                 <tr>
                     <th id="cb" class="no-sort collapsing check-column"><div class="ui checkbox"><input id="cb-select-all-top" type="checkbox"></div></th>
@@ -1834,7 +1834,7 @@ class Mainwp_WPvivid_Extension_DashboardPage
             }
             ?>
 
-            <table class="ui single line table" id="mwp_wpvivid_sites_table" style="width: 100%;">
+            <table class="ui selectable unstackable table mainwp-with-preview-table mainwp-manage-wpsites-table" id="mwp_wpvivid_sites_table" style="width: 100%;">
                 <thead>
                 <tr>
                     <th class="no-sort collapsing check-column"><span class="ui checkbox"><input type="checkbox"></span></th>
@@ -1876,22 +1876,24 @@ class Mainwp_WPvivid_Extension_DashboardPage
 
         <script>
             jQuery( '#mwp_wpvivid_sites_table' ).DataTable( {
-                //"columnDefs": [ { "orderable": false, "targets": "no-sort" } ],
-                //"order": [ [ 1, "asc" ] ],
-                //
-                //"stateSave":  true,
-                "stateDuration": 0, // forever
-                //"scrollX": true,
-                "pagingType": "full_numbers",
+                "stateDuration": 0,
                 "order": [],
-                "columnDefs": [ { "targets": 'no-sort', "orderable": false } ],
-                //
+                "columnDefs": [ { "orderable": false, "targets": "no-sort" } ],
                 "pageLength": 50,
+                "lengthMenu": [ [10,25,50,100,300, -1 ], [10,25,50,100,300, "All"] ],
+                "scrollX": true,
+                "autoWidth": false,
+                "pagingType": 'full_numbers',
                 "language": { "emptyTable": "No websites were found with the WPvivid Backup plugin installed." },
-                "drawCallback": function( settings ) {
-                    jQuery( '#mwp_wpvivid_sites_table .ui.dropdown').dropdown();
-                    jQuery('#mwp_wpvivid_sites_table .ui.checkbox').checkbox();
-                },
+                "drawCallback": function(settings) {
+                    if (typeof jQuery.fn.checkbox === 'function') {
+                        jQuery('#mwp_wpvivid_sites_table .ui.checkbox').checkbox();
+                    }
+
+                    if (typeof jQuery.fn.dropdown === 'function') {
+                        jQuery('#mwp_wpvivid_sites_table .ui.dropdown').dropdown();
+                    }
+                }
             } );
         </script>
         <?php
