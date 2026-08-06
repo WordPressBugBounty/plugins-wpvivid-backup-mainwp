@@ -822,3 +822,139 @@ input:checked + .mwp-wpvivid-slider:before {
 	font-size:16px;
 	margin-top:2px;
 }
+
+
+/* WPvivid MainWP: normalize only text-like form control heights on WPvivid MainWP pages. */
+body.wpvivid-mainwp-page input[type="text"],
+body.wpvivid-mainwp-page input[type="password"],
+body.wpvivid-mainwp-page input[type="email"],
+body.wpvivid-mainwp-page input[type="number"],
+body.wpvivid-mainwp-page input[type="search"],
+body.wpvivid-mainwp-page input[type="url"],
+body.wpvivid-mainwp-page select {
+    min-height: 30px !important;
+    height: 30px !important;
+    line-height: 28px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    box-sizing: border-box !important;
+    vertical-align: middle;
+}
+body.wpvivid-mainwp-page textarea {
+    min-height: 30px !important;
+    line-height: 1.4 !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    box-sizing: border-box !important;
+}
+.mwp-wpvivid-backup-custom-content {
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    padding: 10px 12px;
+}
+#mwp_wpvivid_backup_progress_addon { margin: 10px 0 1em 0; }
+.mwp-wpvivid-span-progress {
+    background: #e5e5e5;
+    display: block;
+    width: 100%;
+    height: 24px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.mwp-wpvivid-span-processed-progress {
+    background: #5fb800;
+    display: block;
+    height: 24px;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+.mwp-wpvivid-status-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 10px;
+    margin-bottom: 1rem;
+    align-items: stretch;
+}
+.mwp-wpvivid-status-left,
+.mwp-wpvivid-status-right { flex: 1 1 49%; display: flex; }
+.mwp-wpvivid-status-info {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 10px 20px;
+    padding: 12px 14px;
+    background: #f9fafb;
+    border: 1px solid #e1e4e8;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #444;
+}
+.mwp-wpvivid-status-item { display: flex; align-items: center; gap: 4px; min-width: 170px; }
+.mwp-wpvivid-status-item .label { font-weight: 500; color: #333; }
+.mwp-wpvivid-status-item .value { font-weight: 600; }
+.mwp-wpvivid-status-item .value.ok { color: #28a745; }
+.mwp-wpvivid-dashicons-blue { color: #17a2b8; }
+.mwp-wpvivid-dashicons-green { color: #28a745; }
+.mwp-wpvivid-status-item .dashicons { font-size: 16px; line-height: 1; vertical-align: middle; opacity: 0.9; }
+.mwp-wpvivid-log-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 3px;
+    height: 120px;
+    overflow-y: auto;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+.mwp-wpvivid-log-title { font-weight: 600; color: #2c3e50; border-bottom: 1px solid #e1e4e8; padding: 4px 0 4px 0.5rem; }
+.mwp-wpvivid-log-content { flex: 1; overflow-y: auto; padding: 0.5rem; word-break: break-all; }
+.mwp-wpvivid-log-content p { margin: 3px 0; font-family: monospace; color: #555; }
+
+/* WPvivid MainWP: keep backup list checkboxes aligned without changing global checkbox/radio styles. */
+body.wpvivid-mainwp-page .mwp-wpvivid-local-remote-backup-list .wp-list-table th.check-column,
+body.wpvivid-mainwp-page .mwp-wpvivid-local-remote-backup-list .wp-list-table td.check-column,
+body.wpvivid-mainwp-page .mwp-wpvivid-local-remote-backup-list .wp-list-table th.wpvivid-check-column,
+body.wpvivid-mainwp-page .mwp-wpvivid-local-remote-backup-list .wp-list-table td.wpvivid-check-column {
+    width: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    padding: 0 8px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+body.wpvivid-mainwp-page .mwp-wpvivid-local-remote-backup-list .wp-list-table th.check-column input[type="checkbox"],
+body.wpvivid-mainwp-page .mwp-wpvivid-local-remote-backup-list .wp-list-table td.check-column input[type="checkbox"],
+body.wpvivid-mainwp-page .mwp-wpvivid-local-remote-backup-list .wp-list-table th.wpvivid-check-column input[type="checkbox"],
+body.wpvivid-mainwp-page .mwp-wpvivid-local-remote-backup-list .wp-list-table td.wpvivid-check-column input[type="checkbox"] {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    position: static !important;
+    display: inline-block !important;
+    box-sizing: border-box !important;
+}
+
+/* WPvivid MainWP: keep the small Scan button in the backup list filter row in normal WP admin button size. */
+body.wpvivid-mainwp-page #mwp_wpvivid_get_scan_backup.button,
+body.wpvivid-mainwp-page #mwp_wpvivid_get_scan_backup.button.action,
+body.wpvivid-mainwp-page #mwp_wpvivid_get_scan_backup.top-action {
+    min-height: 30px !important;
+    height: 30px !important;
+    line-height: 28px !important;
+    padding: 0 10px !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
+}
+

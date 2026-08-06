@@ -433,6 +433,44 @@ class Mainwp_WPvivid_Extension_Subpage
         return $html;
     }
 
+
+    static private function mwp_wpvivid_build_new_backup_progress_html($task)
+    {
+        $log_html = '';
+        if(isset($task['task_info']['mainwp_log_html']) && $task['task_info']['mainwp_log_html'] !== '')
+        {
+            $log_html = wp_kses_post($task['task_info']['mainwp_log_html']);
+        }
+        else
+        {
+            $log_html = '<p id="mwp_wpvivid_current_doing">' . esc_html($task['task_info']['descript']) . '</p>';
+        }
+
+        return '<div class="mwp-wpvivid-one-coloum mwp-wpvivid-workflow mwp-wpvivid-clear-float">
+                            <span><span class="mwp-wpvivid-backup-percent-progress">' . esc_html($task['task_info']['backup_percent']) . '</span> Completed</span><br>
+                            <span class="mwp-wpvivid-span-progress">
+                                <span class="mwp-wpvivid-span-processed-progress mwp-wpvivid-span-processed-percent-progress" style="width:' . esc_attr($task['task_info']['backup_percent']) . '"></span>
+                            </span>
+                            <div class="mwp-wpvivid-status-row">
+                                <div class="mwp-wpvivid-status-left">
+                                    <div class="mwp-wpvivid-status-info">
+                                        <span class="mwp-wpvivid-status-item"><span class="dashicons dashicons-admin-page mwp-wpvivid-dashicons-green"></span><span class="label">' . esc_html__('Total Size:', 'mainwp-wpvivid-extension') . '</span><span class="value">' . esc_html($task['task_info']['total']) . '</span></span>
+                                        <span class="mwp-wpvivid-status-item"><span class="dashicons dashicons-upload mwp-wpvivid-dashicons-blue"></span><span class="label">' . esc_html__('Uploaded:', 'mainwp-wpvivid-extension') . '</span><span class="value">' . esc_html($task['task_info']['upload']) . '</span></span>
+                                        <span class="mwp-wpvivid-status-item"><span class="dashicons dashicons-plugins-checked mwp-wpvivid-dashicons-green"></span><span class="label">' . esc_html__('Speed:', 'mainwp-wpvivid-extension') . '</span><span class="value">' . esc_html($task['task_info']['speed']) . '</span></span>
+                                        <span class="mwp-wpvivid-status-item"><span class="dashicons dashicons-networking mwp-wpvivid-dashicons-green"></span><span class="label">' . esc_html__('Network Connection:', 'mainwp-wpvivid-extension') . '</span><span class="value ok">' . esc_html($task['task_info']['network_connection']) . '</span></span>
+                                    </div>
+                                </div>
+                                <div class="mwp-wpvivid-status-right">
+                                    <div class="mwp-wpvivid-log-block">
+                                        <div class="mwp-wpvivid-log-title"><a>Backup Log</a></div>
+                                        <div class="mwp-wpvivid-log-content">' . $log_html . '</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div><input class="ui green mini button" id="mwp_wpvivid_backup_cancel_btn_addon" type="button" value="' . esc_attr__('Cancel', 'mainwp-wpvivid-extension') . '" style="' . esc_attr($task['task_info']['css_btn_cancel']) . '" /></div>
+                        </div>';
+    }
+
     static public function output_backup_status_addon_ex($site_id, $information){
         global $mainwp_wpvivid_extension_activator;
         $tasks = $information['tasks'];
@@ -466,7 +504,11 @@ class Mainwp_WPvivid_Extension_Subpage
                     $ret['next_resume_time']=$task['data']['next_resume_time'];
                 }
 
-                $ret['progress_html'] = '<div class="mwp-action-progress-bar">
+                if(isset($task['task_info']['mainwp_support_new_backup_progress']) && $task['task_info']['mainwp_support_new_backup_progress']) {
+                    $ret['progress_html'] = self::mwp_wpvivid_build_new_backup_progress_html($task);
+                }
+                else {
+                    $ret['progress_html'] = '<div class="mwp-action-progress-bar">
                             <div class="mwp-action-progress-bar-percent" style="height:24px;width:' . esc_attr($task['task_info']['backup_percent']) . '"></div>
                         </div>
                         <div style="float: left;">
@@ -485,6 +527,7 @@ class Mainwp_WPvivid_Extension_Subpage
                             <div style="clear: both;"></div>
                         </div>
                         <div style="clear: both;"></div>';
+                }
             }
             else if($task['status']['str'] === 'completed'){
                 $options[$task_id]['task_id'] = $task_id;
@@ -536,7 +579,11 @@ class Mainwp_WPvivid_Extension_Subpage
                     $ret['next_resume_time']=$task['data']['next_resume_time'];
                 }
 
-                $ret['progress_html'] = '<div class="mwp-action-progress-bar">
+                if(isset($task['task_info']['mainwp_support_new_backup_progress']) && $task['task_info']['mainwp_support_new_backup_progress']) {
+                    $ret['progress_html'] = self::mwp_wpvivid_build_new_backup_progress_html($task);
+                }
+                else {
+                    $ret['progress_html'] = '<div class="mwp-action-progress-bar">
                             <div class="mwp-action-progress-bar-percent" style="height:24px;width:' . esc_attr($task['task_info']['backup_percent']) . '"></div>
                         </div>
                         <div style="float: left; ' . esc_attr($task['task_info']['display_estimate_backup']) . '">
@@ -559,6 +606,7 @@ class Mainwp_WPvivid_Extension_Subpage
                             <div style="clear: both;"></div>
                         </div>
                         <div style="clear: both;"></div>';
+                }
             }
             else if($task['status']['str'] === 'completed'){
                 $options[$task_id]['task_id'] = $task_id;

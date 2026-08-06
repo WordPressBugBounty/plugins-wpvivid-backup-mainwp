@@ -179,6 +179,23 @@ class Mainwp_WPvivid_Extension_White_Label
                 $show_submit_ticket_link='';
                 $hide_submit_ticket_link='checked';
             }
+
+            $white_label_logo_address=empty($white_label_setting['logo_address'])?'https://wpvivid.com/wp-content/uploads/2019/02/wpvivid-logo.png':$white_label_setting['logo_address'];
+            $white_label_contact_us_address=empty($white_label_setting['contact_us_address'])?'https://wpvivid.com/contact-us':$white_label_setting['contact_us_address'];
+            $white_label_plugin_page_address=empty($white_label_setting['plugin_page_address'])?'https://wordpress.org/plugins/wpvivid-backuprestore/':$white_label_setting['plugin_page_address'];
+            $white_label_twitter_address=empty($white_label_setting['twitter_address'])?'https://twitter.com/wpvividcom':$white_label_setting['twitter_address'];
+            $enable_twitter_address=empty($white_label_setting['enable_twitter_address']) ? '0' : $white_label_setting['enable_twitter_address'];
+            if($enable_twitter_address == '1')
+            {
+                $twitter_address_checked = 'checked';
+                $twitter_address_disable = '';
+            }
+            else
+            {
+                $twitter_address_checked = '';
+                $twitter_address_disable = 'display: none;';
+            }
+
             ?>
             <div style="margin: 10px;">
                 <div class="mwp-wpvivid-welcome-bar mwp-wpvivid-clear-float">
@@ -271,6 +288,52 @@ class Mainwp_WPvivid_Extension_White_Label
                         <div class="mwp-wpvivid-block-bottom-space"><?php esc_html_e('Enter a slug and add it at the end of the url of your WPvivid plugin page to access the white label settings.'); ?></div>
                         <div class="mwp-wpvivid-block-bottom-space"><?php echo 'Current access url is: http(s)://child-site/wp-admin/admin.php?page='.esc_html($white_label_slug).'-dashboard&'.esc_html($wpvivid_access_white_label_slug).'=1'; ?></div>
 
+                        <div class="mwp-wpvivid-block-bottom-space"><strong><?php _e('Logo URL', 'wpvivid'); ?></strong></div>
+                        <div class="mwp-wpvivid-block-bottom-space">
+                            <label>
+                                <input type="text" placeholder="wpvivid_white_label" option="mwp_white_label_setting" name="logo_address" class="all-options" value="<?php esc_attr_e($white_label_logo_address); ?>" />
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="mwp-wpvivid-block-bottom-space"><?php _e('Replace WPvivd logo in backup email reports by adding a url of your logo image.'); ?></div>
+
+                        <div class="mwp-wpvivid-block-bottom-space"><strong><?php _e('Contact us Page', 'wpvivid'); ?></strong></div>
+                        <div class="mwp-wpvivid-block-bottom-space">
+                            <label>
+                                <input type="text" placeholder="wpvivid_white_label" option="mwp_white_label_setting" name="contact_us_address" class="all-options" value="<?php esc_attr_e($white_label_contact_us_address); ?>" />
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="mwp-wpvivid-block-bottom-space"><?php _e('Replace the Contact us url of WPvivid in backup email reports by adding a url of your own contact page.'); ?></div>
+
+                        <div class="mwp-wpvivid-block-bottom-space"><strong><?php _e('Plugin URL', 'wpvivid'); ?></strong></div>
+                        <div class="mwp-wpvivid-block-bottom-space">
+                            <label>
+                                <input type="text" placeholder="wpvivid_white_label" option="mwp_white_label_setting" name="plugin_page_address" class="all-options" value="<?php esc_attr_e($white_label_plugin_page_address); ?>" />
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="mwp-wpvivid-block-bottom-space"><?php _e('Replace WPvivd plugin url in backup email reports by adding a url of your own plugin description page.'); ?></div>
+
+                        <div class="mwp-wpvivid-block-bottom-space">
+                            <div class="mwp-wpvivid-block-bottom-space">
+                                <label class="wpvivid-checkbox">
+                                    <input type="checkbox" option="mwp_white_label_setting" name="enable_twitter_address" <?php esc_attr_e($twitter_address_checked); ?> />
+                                    <span>Enable white label twitter</span>
+                                </label>
+                            </div>
+                            <div id="mwp_wpvivid_twitter_address_params" style="<?php esc_attr_e($twitter_address_disable); ?>">
+                                <div class="mwp-wpvivid-block-bottom-space"><strong><?php _e('Twitter'); ?></strong></div>
+                                <div class="mwp-wpvivid-block-bottom-space">
+                                    <label>
+                                        <input type="text" placeholder="wpvivid_white_label" option="mwp_white_label_setting" name="twitter_address" class="all-options" value="<?php esc_attr_e($white_label_twitter_address); ?>" />
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="mwp-wpvivid-block-bottom-space"><?php _e('Replace Twitter of WPvivid in the backup email report by adding a url of your Twitter.'); ?></div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -349,6 +412,18 @@ class Mainwp_WPvivid_Extension_White_Label
                         var error_message = mwp_wpvivid_output_ajaxerror('changing base settings', textStatus, errorThrown);
                         alert(error_message);
                     });
+                });
+
+                jQuery('input:checkbox[option=mwp_white_label_setting][name=enable_twitter_address]').click(function()
+                {
+                    if(jQuery(this).prop('checked'))
+                    {
+                        jQuery('#mwp_wpvivid_twitter_address_params').show();
+                    }
+                    else
+                    {
+                        jQuery('#mwp_wpvivid_twitter_address_params').hide();
+                    }
                 });
             </script>
             <?php

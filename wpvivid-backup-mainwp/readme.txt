@@ -2,9 +2,9 @@
 Contributors: wpvivid
 Tags: WPvivid backup, MainWP extension, backup, auto backup, cloud backup 
 Requires at least: 4.5
-Tested up to: 6.9.4
+Tested up to: 7.0.2
 Requires PHP: 5.3
-Stable tag: 0.9.41
+Stable tag: 0.9.42
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -47,6 +47,9 @@ See the [get started guide](https://wpvivid.com/wpvivid-backup-for-mainwp).
 3. Set WPvivid Backup Plugin settings for all child sites
 
 == Changelog ==
+= 0.9.42 =
+- Added support for syncing additional white label settings to child sites.
+- Fixed some UI bugs.
 = 0.9.41 =
 - Fixed an issue where special characters in schedule names caused synchronization failures to child sites.
 - Fixed a pagination issue on the Dashboard page that occurred in certain server environments.

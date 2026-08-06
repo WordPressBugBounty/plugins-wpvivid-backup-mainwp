@@ -1346,7 +1346,7 @@ class Mainwp_WPvivid_Extension_SettingPage
                         <p>
                             <label>
                                 <input type="checkbox" option="mwp-setting-addon" name="mwp_ismerge_addon" <?php echo esc_attr($wpvivid_setting_ismerge); ?> />
-                                <span><?php esc_html_e('Merge all the backup files into single package when a backup completes. This will save great disk spaces, though takes longer time. We recommended you check the option especially on sites with insufficient server resources.'); ?></span>
+                                <span><?php esc_html_e('Merge all backup parts into single zip when a backup completes. This helps save disk spaces but can cause timeouts on restricted servers. We recommended unchecking it on servers with limited resources.'); ?></span>
                             </label>
                         </p>
 
@@ -1503,7 +1503,7 @@ class Mainwp_WPvivid_Extension_SettingPage
                         <td>
                             <div style="padding:0 1em 1em 0;">
                                 <span class="dashicons  dashicons-warning wpvivid-dashicons-red"></span>
-                                <span>Configure you email server(SMTP) with a <a href="https://wpvivid.com/8-best-smtp-plugins-for-wordpress.html">WordPress SMTP plugin</a> before using the feature</span>
+                                <span>Configure your email server(SMTP) with a <a href="https://wpvivid.com/8-best-smtp-plugins-for-wordpress.html">WordPress SMTP plugin</a> before using the feature</span>
                                 <span class="dashicons dashicons-editor-help mwp-wpvivid-dashicons-editor-help mwp-wpvivid-tooltip-ex">
                                 <div class="mwp-wpvivid-bottom">
                                     <!-- The content you need -->
@@ -3720,7 +3720,7 @@ class Mainwp_WPvivid_Extension_SettingPage
                 <div class="mwp-wpvivid-block-bottom-space">
                     <label>
                         <input type="checkbox" option="mwp-setting" name="mwp_ismerge" <?php echo esc_attr($wpvivid_setting_ismerge); ?> />
-                        <span><?php esc_html_e('Merge all the backup files into single package when a backup completes. This will save great disk spaces, though takes longer time. We recommended you check the option especially on sites with insufficient server resources.'); ?></span>
+                        <span><?php esc_html_e('Merge all backup parts into single zip when a backup completes. This helps save disk spaces but can cause timeouts on restricted servers. We recommended unchecking it on servers with limited resources.'); ?></span>
                     </label>
                 </div>
                 <div class="mwp-wpvivid-block-bottom-space">

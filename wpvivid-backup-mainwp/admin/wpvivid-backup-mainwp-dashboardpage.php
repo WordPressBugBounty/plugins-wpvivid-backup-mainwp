@@ -618,7 +618,7 @@ class Mainwp_WPvivid_Extension_DashboardPage
                     wp_send_json( $output );
                 }
 
-                $ret=$server->get_dashboard_download_link($user_info,$addons);
+                $ret=$server->get_dashboard_download_link($user_info,$addons,$site_id);
                 if($ret['result']=='success')
                 {
                     $url = $ret['download_link'];
@@ -739,7 +739,7 @@ class Mainwp_WPvivid_Extension_DashboardPage
 
                 if($need_download_staging)
                 {
-                    $ret=$server->get_staging_download_link($user_info, $addons);
+                    $ret=$server->get_staging_download_link($user_info, $addons, $site_id);
                     if($ret['result']=='success')
                     {
                         $url = $ret['download_link'];

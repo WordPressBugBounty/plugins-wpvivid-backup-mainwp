@@ -191,8 +191,16 @@ class Mainwp_WPvivid_Connect_server
         }
     }
 
-    public function get_dashboard_download_link($user_info,$addons)
+    public function get_dashboard_download_link($user_info,$addons,$site_id)
     {
+        $site_url = $this->mwp_wpvivid_get_site_url($site_id);
+        if ($site_url === false || empty($site_url))
+        {
+            $ret['result']='failed';
+            $ret['error']='Failed to get child site url.';
+            return $ret;
+        }
+
         $public_key=$this->get_key();
         if($public_key===false)
         {
@@ -206,6 +214,7 @@ class Mainwp_WPvivid_Connect_server
         $crypt->generate_key();
 
         $json['user_info'] = $user_info;
+        $json['domain'] = strtolower(rtrim($site_url, '/'));
         $json['mainwp_update']=1;
         $json['addons']=$addons;
         $json=wp_json_encode($json);
@@ -219,8 +228,16 @@ class Mainwp_WPvivid_Connect_server
         return $ret;
     }
 
-    public function get_staging_download_link($user_info, $addons)
+    public function get_staging_download_link($user_info, $addons, $site_id)
     {
+        $site_url = $this->mwp_wpvivid_get_site_url($site_id);
+        if ($site_url === false || empty($site_url))
+        {
+            $ret['result']='failed';
+            $ret['error']='Failed to get child site url.';
+            return $ret;
+        }
+
         $public_key=$this->get_key();
         if($public_key===false)
         {
@@ -234,6 +251,7 @@ class Mainwp_WPvivid_Connect_server
         $crypt->generate_key();
 
         $json['user_info'] = $user_info;
+        $json['domain'] = strtolower(rtrim($site_url, '/'));
         $json['mainwp_update']=1;
         $json['addons']=$addons;
         $json=wp_json_encode($json);

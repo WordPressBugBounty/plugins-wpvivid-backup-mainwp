@@ -4,7 +4,7 @@
  * Plugin Name: WPvivid Backup MainWP
  * Plugin URI: https://mainwp.com/
  * Description: WPvivid Backup for MainWP enables you to create and download backups of a specific child site, set backup schedules, connect with your remote storage and set settings for all of your child sites directly from your MainWP dashboard.
- * Version: 0.9.41
+ * Version: 0.9.42
  * Author: WPvivid Team
  * Author URI: https://wpvivid.com
  * License: GPL-3.0+
@@ -23,7 +23,7 @@ class Mainwp_WPvivid_Extension_Activator
 {
     protected $plugin_handle = 'wpvivid-backup-mainwp';
     protected $product_id = 'WPvivid Backup MainWP';
-    protected $version = '0.9.41';
+    protected $version = '0.9.42';
     protected $childEnabled;
     public $childKey;
     public $childFile;
@@ -50,7 +50,8 @@ class Mainwp_WPvivid_Extension_Activator
         $this->remote=new Mainwp_WPvivid_Remote_collection();
         $this->childFile = __FILE__;
         add_filter( 'mainwp_getextensions', array( &$this, 'get_this_extension' ) );
-        add_action( 'admin_init', array( &$this, 'admin_init' ) );
+        add_action( 'admin_enqueue_scripts', array( &$this, 'enqueue_admin_assets' ) );
+        add_filter( 'admin_body_class', array( &$this, 'add_admin_body_class' ) );
 
         $primary_backup         = get_option( 'mainwp_primaryBackup', null );
         if ( 'wpvivid' == $primary_backup ) {
@@ -529,8 +530,13 @@ class Mainwp_WPvivid_Extension_Activator
         }
     }
 
-    public function admin_init()
+    public function enqueue_admin_assets($hook = '')
     {
+        if(!$this->is_wpvivid_mainwp_admin_page())
+        {
+            return;
+        }
+
         wp_enqueue_style('Mainwp Wpvivid Extension', plugin_dir_url(__FILE__) . 'admin/css/wpvivid-backup-mainwp-admin.css', array(), $this->version, 'all');
         wp_enqueue_style('Mainwp Wpvivid Extension'.'jstree', plugin_dir_url(__FILE__) . 'admin/js/jstree/dist/themes/default/style.min.css', array(), $this->version, 'all');
 
@@ -541,6 +547,37 @@ class Mainwp_WPvivid_Extension_Activator
             $site_id=sanitize_key($_GET['id']);
             wp_add_inline_script( 'Mainwp Wpvivid Extension', 'site_id='.$site_id);
         }
+    }
+
+    public function add_admin_body_class($classes)
+    {
+        if($this->is_wpvivid_mainwp_admin_page())
+        {
+            $classes .= ' wpvivid-mainwp-page';
+        }
+
+        return $classes;
+    }
+
+    private function is_wpvivid_mainwp_admin_page()
+    {
+        if(!is_admin())
+        {
+            return false;
+        }
+
+        if(!isset($_GET['page']) || empty($_GET['page']) || !is_string($_GET['page']))
+        {
+            return false;
+        }
+
+        $page = sanitize_key(wp_unslash($_GET['page']));
+        $wpvivid_pages = array(
+            'extensions-wpvivid-backup-mainwp',
+            'managesiteswpvivid',
+        );
+
+        return in_array($page, $wpvivid_pages, true);
     }
 
     public function managesites_subpage( $subPage )

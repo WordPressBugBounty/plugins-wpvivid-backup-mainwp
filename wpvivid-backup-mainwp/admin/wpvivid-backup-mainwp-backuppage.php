@@ -1467,13 +1467,13 @@ class Mainwp_WPvivid_Extension_BackupPage
                 <?php $this->mwp_wpvivid_backup_to_addon();?>
                 <div style="">
                     <p><span class="dashicons dashicons-screenoptions wpvivid-dashicons-blue"></span><span><strong>Backup Content</strong></span></p>
-                    <div style="padding:0.5em;margin-bottom:0.5em;background:#eaf1fe;border-radius:8px;">
+                    <div class="mwp-wpvivid-backup-custom-content">
                         <?php
                         $this->mwp_wpvivid_backup_type_addon();
                         ?>
                     </div>
                 </div>
-                <div id="wpvivid_custom_manual_backup" style="display: none;">
+                <div id="wpvivid_custom_manual_backup" style="margin-top: 10px; display: none;">
                     <div style="border-left: 4px solid #eaf1fe; border-right: 4px solid #eaf1fe;box-sizing: border-box; padding-left:0.5em;">
                         <?php
                         $custom_backup_manager = new Mainwp_WPvivid_Custom_Backup_Manager();
@@ -2412,7 +2412,7 @@ class Mainwp_WPvivid_Extension_BackupPage
                 var b_has_data = false;
                 var update_backup=false;
 
-                if(data.progress_html!==false) {
+                if(data.progress_html!==false && data.progress_html) {
                     jQuery('#mwp_wpvivid_backup_progress_addon').show();
                     jQuery('#mwp_wpvivid_backup_progress_addon').html(data.progress_html);
                 }
